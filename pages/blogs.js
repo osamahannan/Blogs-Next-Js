@@ -3,31 +3,17 @@ import styles from '@/styles/Home.module.css'
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 import Link from 'next/link'
+import * as fs from "fs"
 
-const Blogs = () => {
+const Blogs = ({ allBlogs }) => {
+  // const [blogs, setBlogs] = useState(props.data)
 
-  const [blogs, setBlogs] = useState([])
-
-  useEffect(() => {
-    const getAllBlogs = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/blogs")
-        const data = await res.json();
-        setBlogs(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getAllBlogs();
-  }, [])
-
-  console.log("blogs =", blogs)
-
+  const blogs = allBlogs
 
   return (
     <div className={styles.blogDisplay}>
       <div className={styles.grid}>
-        {blogs.map(blog => {
+        {blogs?.map(blog => {
           return (
             <Link
               href={`blogpost/${blog.slug}`}
@@ -40,7 +26,7 @@ const Blogs = () => {
                 {blog.title} <span>-&gt;</span>
               </h2>
               <p className={inter.className}>
-                {blog.content.substring(0, 100)}...
+                {blog.metadesc.substring(0, 100)}...
               </p>
             </Link>
           )
@@ -49,5 +35,28 @@ const Blogs = () => {
     </div>
   )
 }
+
+// `getStaticPaths` requires using `getStaticProps`
+export async function getStaticProps(context) {
+  let allBlogs = [];
+  const blogs = await fs.promises.readdir("blogdata")
+  for (let i = 0; i < blogs.length; i++) {
+    const blog = blogs[i];
+    const file = await fs.promises.readFile(("blogdata/" + blog), "utf-8")
+    allBlogs.push(JSON.parse(file))
+  }
+  return {
+    // Passed to the page component as props
+    props: { allBlogs },
+  }
+}
+
+// export async function getServerSideProps(context) {
+//   const res = await fetch("http://localhost:3000/api/blogs")
+//   const allBlogs = await res.json();
+//   return {
+//     props: { allBlogs }, // will be passed to the page component as props
+//   }
+// }
 
 export default Blogs

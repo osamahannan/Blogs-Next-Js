@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 
@@ -17,11 +17,12 @@ export default function Home() {
       <main className={styles.main}>
 
         <div className={styles.imageWrapper}>
-          <Image src="/homeimg.jpg" width={600} height={400} />
+          {/* <Image src="/homeimg.jpg" width={600} height={400} /> */}
+          <img src="/homeimg.jpg" width={600} height={400} />
         </div>
 
         <div className={styles.center}>
-          <Image
+          <img
             className={styles.logo}
             src="/next.svg"
             alt="Next.js Logo"
@@ -29,14 +30,29 @@ export default function Home() {
             height={37}
             priority
           />
+          {/* <Image
+            className={styles.logo}
+            src="/next.svg"
+            alt="Next.js Logo"
+            width={180}
+            height={37}
+            priority
+          /> */}
           <div className={styles.thirteen}>
-            <Image
+            <img
               src="/thirteen.svg"
               alt="13"
               width={40}
               height={31}
               priority
             />
+            {/* <Image
+              src="/thirteen.svg"
+              alt="13"
+              width={40}
+              height={31}
+              priority
+            /> */}
           </div>
         </div>
 
